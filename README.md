@@ -5,15 +5,15 @@ Works completely **offline** — neural network models are bundled inside the AP
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| UI / Logic | Vue 3 + TypeScript + Ionic 7 |
-| Routing | Vue Router 4 (IonTabs) |
-| State Management | Pinia |
+| Layer            | Technology                                                        |
+| ---------------- | ----------------------------------------------------------------- |
+| UI / Logic       | Vue 3 + TypeScript + Ionic 7                                      |
+| Routing          | Vue Router 4 (IonTabs)                                            |
+| State Management | Pinia                                                             |
 | Face Recognition | face-api.js (SSD MobileNet v1 + FaceLandmark68 + FaceRecognition) |
-| Camera / Storage | Capacitor 5 (Camera, Filesystem, Preferences) |
-| Build | Vite 4 + vue-tsc |
-| Android | Capacitor Android + Gradle |
+| Camera / Storage | Capacitor 5 (Camera, Filesystem, Preferences)                     |
+| Build            | Vite 4 + vue-tsc                                                  |
+| Android          | Capacitor Android + Gradle                                        |
 
 ## App Pages
 
@@ -61,7 +61,6 @@ public/
 ## Install Dependencies
 
 ```bash
-cd "c:\Users\User\Desktop\face id"
 pnpm install
 ```
 
@@ -80,7 +79,7 @@ Run the following commands **in order** from the project root:
 ### 1. Build the web app
 
 ```bash
-node node_modules/vite/bin/vite.js build
+pnpm build
 ```
 
 Output goes into the `dist/` folder.
@@ -88,18 +87,17 @@ Output goes into the `dist/` folder.
 ### 2. Sync with Capacitor (copy dist → Android project)
 
 ```bash
-node node_modules/@capacitor/cli/bin/capacitor sync android
+pnpm cap sync android
 ```
 
 ### 3. Build the APK
 
 ```bash
 cd android
-$env:JAVA_HOME="E:\Android Studio\jbr"; $env:GRADLE_USER_HOME="E:\.gradle"; $env:Path="E:\Android Studio\jbr\bin;$env:Path"; .\gradlew.bat assembleDebug
+.\gradlew assembleDebug
 ```
 
-> **Note:** The paths `E:\Android Studio\jbr` and `E:\.gradle` match a local installation.  
-> Update them to reflect the actual paths on your machine if they differ.
+> **Note:** Ensure that `JAVA_HOME` and the Android SDK are correctly configured in your system environment variables.
 
 The output APK will be located at:
 

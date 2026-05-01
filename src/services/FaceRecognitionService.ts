@@ -23,14 +23,12 @@ class FaceRecognitionService {
     if (this.loadingPromise) return this.loadingPromise;
 
     this.loadingPromise = (async () => {
-      console.log("[FaceRecognition] Загрузка моделей...");
       await Promise.all([
         faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_PATH),
         faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_PATH),
         faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_PATH),
       ]);
       this.modelsLoaded = true;
-      console.log("[FaceRecognition] Модели загружены ✓");
     })().catch((err) => {
       this.loadingPromise = null;
       throw err;
@@ -61,7 +59,6 @@ class FaceRecognitionService {
       .withFaceDescriptor();
 
     if (!detection) {
-      console.warn("[FaceRecognition] Лицо не обнаружено на изображении");
       return null;
     }
 
@@ -150,10 +147,6 @@ class FaceRecognitionService {
     ctx.drawImage(video, 0, 0);
     return canvas.toDataURL("image/jpeg", 0.9);
   }
-
-  // ──────────────────────────────────────────
-  // Вспомогательные методы
-  // ──────────────────────────────────────────
 
   private base64ToImage(base64: string): Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {

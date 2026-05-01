@@ -21,8 +21,6 @@ const DEFAULT_SETTINGS: AppSettings = {
 };
 
 class DatabaseService {
-  // ──────────── ЛЮДИ ────────────
-
   async getAllPeople(): Promise<Person[]> {
     const { value } = await Preferences.get({ key: KEYS.PEOPLE });
     if (!value) return [];
@@ -74,8 +72,6 @@ class DatabaseService {
     }
   }
 
-  // ──────────── ЖУРНАЛ ПОСЕЩАЕМОСТИ ────────────
-
   async getAllAttendance(): Promise<AttendanceRecord[]> {
     const { value } = await Preferences.get({ key: KEYS.ATTENDANCE });
     if (!value) return [];
@@ -123,8 +119,6 @@ class DatabaseService {
     return this.getAttendanceByDate(today);
   }
 
-  // ──────────── НАСТРОЙКИ ────────────
-
   async getSettings(): Promise<AppSettings> {
     const { value } = await Preferences.get({ key: KEYS.SETTINGS });
     if (!value) return { ...DEFAULT_SETTINGS };
@@ -144,8 +138,6 @@ class DatabaseService {
     });
   }
 
-  // ──────────── ЭКСПОРТ CSV ────────────
-
   async exportAttendanceCSV(): Promise<string> {
     const records = await this.getAllAttendance();
     const header = "ID,Имя,Дата,Время,Точность,Статус\n";
@@ -158,8 +150,6 @@ class DatabaseService {
     });
     return header + rows.join("\n");
   }
-
-  // ──────────── ОЧИСТКА СТАРЫХ ДАННЫХ ────────────
 
   async cleanupOldRecords(): Promise<void> {
     const settings = await this.getSettings();

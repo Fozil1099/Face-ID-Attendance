@@ -15,7 +15,6 @@ class CameraService {
       if (Capacitor.isNativePlatform()) {
         const granted = await this.requestPermissions("camera");
         if (!granted) {
-          console.error("[Camera] Разрешение на камеру не предоставлено");
           return null;
         }
       }
@@ -37,7 +36,6 @@ class CameraService {
         format: photo.format ?? "jpeg",
       };
     } catch (error) {
-      console.error("[Camera] Ошибка съёмки:", error);
       return null;
     }
   }
@@ -50,7 +48,6 @@ class CameraService {
       if (Capacitor.isNativePlatform()) {
         const granted = await this.requestPermissions("photos");
         if (!granted) {
-          console.error("[Camera] Разрешение на галерею не предоставлено");
           return null;
         }
       }
@@ -72,7 +69,6 @@ class CameraService {
         format: photo.format ?? "jpeg",
       };
     } catch (error) {
-      console.error("[Camera] Ошибка выбора из галереи:", error);
       return null;
     }
   }
@@ -100,7 +96,6 @@ class CameraService {
       if (type === "photos") return result.photos === "granted";
       return result.camera === "granted";
     } catch (error) {
-      console.error("[Camera] Ошибка запроса разрешений:", error);
       return false;
     }
   }
@@ -110,7 +105,7 @@ class CameraService {
    */
   async startVideoStream(
     videoElement: HTMLVideoElement,
-    facingMode: 'user' | 'environment' = 'user',
+    facingMode: "user" | "environment" = "user",
   ): Promise<MediaStream | null> {
     try {
       // Запрашиваем разрешения на нативных платформах
@@ -135,9 +130,6 @@ class CameraService {
         });
       } catch {
         // Fallback — любая доступная камера
-        console.warn(
-          "[Camera] Камера недоступна, пробуем любую...",
-        );
         stream = await navigator.mediaDevices.getUserMedia({
           video: true,
           audio: false,

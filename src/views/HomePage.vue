@@ -181,7 +181,6 @@ const showSuccessToast = ref(false)
 const markedPersonName = ref('')
 const markedTime = ref('')
 
-// ──────── Статус камеры ────────
 const cameraStatus = computed(() => {
   if (!streamReady.value) return 'Подключение камеры...'
   if (!modelsReady.value) return 'Загрузка моделей...'
@@ -194,7 +193,6 @@ const statusClass = computed(() => {
   return '' as const
 })
 
-// ──────── Оверлей ────────
 const overlayState = computed(() => {
   if (isScanning.value) return 'scanning' as const
   if (!recognitionResult.value) return 'idle' as const
@@ -219,17 +217,14 @@ const resultCardClass = computed(() => {
   return 'result-danger'
 })
 
-// ──────── События камеры ────────
 function onStreamStarted() {
   streamReady.value = true
 }
 
 function onStreamError(err: string) {
-  console.error('Камера:', err)
   streamReady.value = false
 }
 
-// ──────── Сканирование ────────
 async function scanFace() {
   if (!cameraRef.value || isScanning.value) return
   const video = cameraRef.value.getVideoElement()
@@ -239,11 +234,6 @@ async function scanFace() {
   recognitionResult.value = null
 
   try {
-    const base64 = cameraRef.value.capture
-      ? (() => { cameraRef.value!.capture(); return '' })()
-      : ''
-
-    // Захват кадра напрямую
     const { cameraService } = await import('@/services/CameraService')
     const frameBase64 = cameraService.captureFrame(video)
 
@@ -259,13 +249,11 @@ async function scanFace() {
       alreadyMarked.value = await attendanceStore.hasArrivedToday(result.person.id)
     }
   } catch (e) {
-    console.error('Ошибка сканирования:', e)
   } finally {
     isScanning.value = false
   }
 }
 
-// ──────── Отметить приход ────────
 async function markArrival() {
   if (!recognitionResult.value?.person || isMarking.value) return
   isMarking.value = true
@@ -296,7 +284,6 @@ function resetResult() {
   alreadyMarked.value = false
 }
 
-// ──────── Инициализация ────────
 onMounted(async () => {
   await Promise.all([
     peopleStore.loadPeople(),
@@ -312,9 +299,9 @@ async function loadModels() {
   try {
     await faceRecognitionService.loadModels()
     modelsReady.value = true
-  } catch (e: any) {
-    console.error('[HomePage] Ошибка загрузки моделей:', e)
-    modelsError.value = e?.message ?? 'Неизвестная ошибка'
+  } catch (e: unknown) {
+    const error = e as Error
+    modelsError.value = error.message ?? 'Неизвестная ошибка'
   }
 }
 

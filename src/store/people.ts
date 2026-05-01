@@ -23,7 +23,6 @@ export const usePeopleStore = defineStore("people", () => {
       people.value = await databaseService.getAllPeople();
     } catch (e) {
       error.value = "Ошибка загрузки данных";
-      console.error(e);
     } finally {
       loading.value = false;
     }
@@ -58,7 +57,6 @@ export const usePeopleStore = defineStore("people", () => {
       return person;
     } catch (e) {
       error.value = "Ошибка регистрации";
-      console.error(e);
       return null;
     } finally {
       loading.value = false;
@@ -95,7 +93,6 @@ export const usePeopleStore = defineStore("people", () => {
       return true;
     } catch (e) {
       error.value = "Ошибка обновления";
-      console.error(e);
       return false;
     } finally {
       loading.value = false;
